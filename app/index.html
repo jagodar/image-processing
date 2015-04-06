@@ -22,17 +22,31 @@
 			}
 			
 			function addImage(img, divImgs) {
-				var imgNode = document.createElement("IMG");
-				imgNode.file = img;
-				divImgs.appendChild(imgNode);
+				var canvas = document.createElement("canvas");
+				var context = canvas.getContext('2d');
+				
+				divImgs.appendChild(canvas);
 
 				var reader = new FileReader();
-				reader.onload = (function(aImg) { 
+				reader.onload = (function(context) { 
 					return function(e) {
-						aImg.src = e.target.result;
-						aImg.onclick = function() {
-							window.open(aImg.src)};}; 
-						})(imgNode);
+						var img = new Image();
+						img.onload = function() {
+							var maxHeigth = 150;
+							if (img.height > maxHeigth) {
+								img.width *= maxHeigth /img.height;
+								img.height = maxHeigth;
+							}
+							canvas.width = img.width;
+							canvas.height = img.height;
+							context.drawImage(img,0,0,img.width, img.height);
+							canvas.onclick = function() {
+								window.open(img.src);
+							}
+						}
+						img.src = e.target.result;
+					}
+				})(context);
 				reader.readAsDataURL(img);
 			}
 		</script>
