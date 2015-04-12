@@ -1,15 +1,3 @@
-
-img {
-	display: block;
-	float: left;
-	width: auto;
-	height: auto;
-	max-width: 150px;
-	max-height: 150px;
-	padding: 10px;
-
-}
-
 .upload {
 	height: 60px;
 	display: block;
@@ -36,4 +24,14 @@ img {
 	position: relative;
 	z-index: 100;
 	opacity: 0;
+}
+
+.drop {
+	height: 60px;
+	display: block;
+	border: 2px dashed #aaa;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	text-align: center;
+	line-height: 60px;
 }
