@@ -4,6 +4,7 @@ var app = (function () {
 		if ('files' in input && input.files.length != 0) {
 			for (var i = 0; i < input.files.length; i++) {
 				var file = input.files[i];
+				console.log(file);
 				var configCallback = {
 					file: file,
 					output: config.output,
@@ -80,6 +81,8 @@ var app = (function () {
 		fileReader: fileReader
 	}
 }());
+
+
 var dragNDrop = (function () {
 	var setDnD = function setDnD(config) {
 		config.input.addEventListener("dragover", function(e){
@@ -88,13 +91,23 @@ var dragNDrop = (function () {
 		}, true);
 		config.input.addEventListener("drop", function(e){
 			e.preventDefault();
-			console.log("ok");
+			var conf = {
+				e: e
+			};
+			config.callback(conf);
 		}, true);
+	},
+	callback = function callback(config) {
+		var e = config.e;
+		var data = e.dataTransfer.files;
+		console.log(data);
 	};
 	return {
-		setDnD: setDnD
+		setDnD: setDnD,
+		callback: callback
 	}
 }());
+
 
 function controller() {
 	var config = {
@@ -103,11 +116,12 @@ function controller() {
 		callback: app.callback, 
 		draw: app.drawThumbnail,
 		element: document.createElement("canvas")
-	};
+	}; 
 	app.filesUpload(config);
-	
 	var configDnD = {
-		input: document.getElementById("target")
+		input: document.getElementById("target"),
+		callback: dragNDrop.callback
 	}
 	dragNDrop.setDnD(configDnD);
 }
+
